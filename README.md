@@ -1,6 +1,6 @@
-# Convertify - PNG/JPG to PDF Converter
+# Convertofy - PNG/JPG to PDF Converter
 
-Convertify adalah aplikasi web berbasis HTML, CSS, dan JavaScript untuk mengonversi gambar PNG dan JPG ke format PDF.
+Convertofy adalah aplikasi web berbasis HTML, CSS, dan JavaScript untuk mengonversi gambar PNG dan JPG ke format PDF.
 
 ## Fitur
 
@@ -13,7 +13,7 @@ Convertify adalah aplikasi web berbasis HTML, CSS, dan JavaScript untuk mengonve
 
 ## Cara Menggunakan
 
-1. Buka aplikasi Convertify di browser
+1. Buka aplikasi Convertofy di browser
 2. Upload gambar PNG/JPG dengan:
    - Klik area upload untuk memilih file, atau
    - Drag & drop file ke area upload
