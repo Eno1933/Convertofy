@@ -1,86 +1,47 @@
-// Convertify - Elegant PNG/JPG to PDF Converter
+// Convertofy - Image to PDF Converter
 
 document.addEventListener('DOMContentLoaded', function() {
-    // Elemen DOM
+    // Elements
     const fileInput = document.getElementById('fileInput');
     const dropArea = document.getElementById('dropArea');
     const imagePreview = document.getElementById('imagePreview');
     const convertBtn = document.getElementById('convertBtn');
     const clearBtn = document.getElementById('clearBtn');
+    const previewBtn = document.getElementById('previewBtn');
     const pdfNameInput = document.getElementById('pdfName');
+    const pageSizeSelect = document.getElementById('pageSize');
+    const pageOrientationSelect = document.getElementById('pageOrientation');
+    const imageQualitySelect = document.getElementById('imageQuality');
+    const marginTopInput = document.getElementById('marginTop');
+    const marginBottomInput = document.getElementById('marginBottom');
+    const marginLeftInput = document.getElementById('marginLeft');
+    const marginRightInput = document.getElementById('marginRight');
     const progressContainer = document.getElementById('progressContainer');
     const progressBar = document.getElementById('progressBar');
     const progressPercent = document.getElementById('progressPercent');
     const progressText = document.getElementById('progressText');
     const fileList = document.getElementById('fileList');
     const fileCount = document.querySelector('.file-count');
-    const conversionCount = document.getElementById('conversionCount');
-    const backToTopBtn = document.querySelector('.back-to-top');
-    const navbar = document.querySelector('.navbar');
-    const uploadLabel = document.querySelector('.upload-label');
     
-    // Statistik
-    let conversions = localStorage.getItem('convertify_conversions') || 0;
-    conversionCount.textContent = conversions;
-    
-    // Array untuk menyimpan gambar
+    // Variables
     let images = [];
+    let dragSrcEl = null;
     
-    // Event listener untuk navbar scroll effect
-    window.addEventListener('scroll', function() {
-        if (window.scrollY > 50) {
-            navbar.classList.add('scrolled');
-        } else {
-            navbar.classList.remove('scrolled');
-        }
-        
-        // Back to top button visibility
-        if (window.scrollY > 300) {
-            backToTopBtn.classList.add('visible');
-        } else {
-            backToTopBtn.classList.remove('visible');
-        }
-    });
+    // Page size mappings
+    const pageSizes = {
+        a4: { width: 210, height: 297 },
+        letter: { width: 216, height: 279 },
+        legal: { width: 216, height: 356 },
+        a5: { width: 148, height: 210 }
+    };
     
-    // Smooth scroll untuk anchor links
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function(e) {
-            const targetId = this.getAttribute('href');
-            if (targetId === '#') return;
-            
-            const targetElement = document.querySelector(targetId);
-            if (targetElement) {
-                e.preventDefault();
-                
-                window.scrollTo({
-                    top: targetElement.offsetTop - 80,
-                    behavior: 'smooth'
-                });
-                
-                // Update active nav link
-                document.querySelectorAll('.nav-link').forEach(link => {
-                    link.classList.remove('active');
-                });
-                this.classList.add('active');
-            }
-        });
-    });
-    
-    // Event listener untuk area upload (FIXED: Tidak perlu dua kali klik)
+    // Event listener untuk area upload
     dropArea.addEventListener('click', (e) => {
-        // Mencegah event bubbling ke label
         if (e.target === dropArea || e.target.classList.contains('upload-text') || 
             e.target.classList.contains('upload-icon') || e.target.closest('.upload-icon')) {
             fileInput.click();
         }
     });
-    
-    // Event listener untuk label upload (FIXED)
-    if (uploadLabel) {
-        uploadLabel.addEventListener('click', function(e) {
-            e.stopPropagation();
-        });
-    }
     
     // Drag & drop functionality
     ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
@@ -128,7 +89,6 @@ document.addEventListener('DOMContentLoaded', function() {
         if (this.files.length > 0) {
             handleFiles(this.files);
         }
-        // Reset input untuk memungkinkan upload file yang sama lagi
         this.value = '';
     });
     
@@ -174,7 +134,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     file: file,
                     url: e.target.result,
                     name: file.name,
-                    size: formatFileSize(file.size)
+                    size: formatFileSize(file.size),
+                    order: images.length + 1
                 });
                 
                 filesProcessed++;
@@ -221,6 +182,8 @@ document.addEventListener('DOMContentLoaded', function() {
             const fileItem = document.createElement('div');
             fileItem.className = 'file-item';
             fileItem.setAttribute('data-id', image.id);
+            fileItem.setAttribute('draggable', 'true');
+            fileItem.setAttribute('data-index', index);
             
             fileItem.innerHTML = `
                 <div class="position-relative">
@@ -237,9 +200,12 @@ document.addEventListener('DOMContentLoaded', function() {
             `;
             
             imagePreview.appendChild(fileItem);
+            
+            // Tambahkan event listener untuk drag & drop
+            addDragListeners(fileItem);
         });
         
-        // Tambahkan event listener untuk tombol hapus (FIXED)
+        // Tambahkan event listener untuk tombol hapus
         attachRemoveListeners();
     }
     
@@ -274,19 +240,104 @@ document.addEventListener('DOMContentLoaded', function() {
         if (index !== -1) {
             const imageName = images[index].name;
             images.splice(index, 1);
+            
+            // Update order untuk semua gambar
+            images.forEach((image, idx) => {
+                image.order = idx + 1;
+            });
+            
             updatePreview();
             updateButtons();
             showNotification(`"${truncateText(imageName, 20)}" telah dihapus`, 'info');
         }
     }
     
+    // Drag & drop untuk mengurutkan file
+    function addDragListeners(element) {
+        element.addEventListener('dragstart', handleDragStart, false);
+        element.addEventListener('dragover', handleDragOver, false);
+        element.addEventListener('dragleave', handleDragLeave, false);
+        element.addEventListener('dragend', handleDragEnd, false);
+        element.addEventListener('drop', handleDropSort, false);
+    }
+    
+    function handleDragStart(e) {
+        dragSrcEl = this;
+        this.classList.add('dragging');
+        e.dataTransfer.effectAllowed = 'move';
+        e.dataTransfer.setData('text/html', this.innerHTML);
+    }
+    
+    function handleDragOver(e) {
+        if (e.preventDefault) {
+            e.preventDefault();
+        }
+        e.dataTransfer.dropEffect = 'move';
+        this.classList.add('sortable-chosen');
+        return false;
+    }
+    
+    function handleDragLeave(e) {
+        this.classList.remove('sortable-chosen');
+    }
+    
+    function handleDragEnd(e) {
+        const items = document.querySelectorAll('.file-item');
+        items.forEach(item => {
+            item.classList.remove('dragging');
+            item.classList.remove('sortable-chosen');
+        });
+    }
+    
+    function handleDropSort(e) {
+        e.stopPropagation();
+        
+        if (dragSrcEl !== this) {
+            dragSrcEl.classList.remove('dragging');
+            this.classList.remove('sortable-chosen');
+            
+            // Dapatkan index dari elemen yang di drag dan di drop
+            const dragIndex = parseInt(dragSrcEl.getAttribute('data-index'));
+            const dropIndex = parseInt(this.getAttribute('data-index'));
+            
+            // Tukar posisi dalam array
+            const temp = images[dragIndex];
+            images[dragIndex] = images[dropIndex];
+            images[dropIndex] = temp;
+            
+            // Update order dan data-index
+            images.forEach((image, index) => {
+                image.order = index + 1;
+            });
+            
+            // Update preview
+            updatePreview();
+            showNotification('Urutan file berhasil diubah', 'success');
+        }
+        
+        return false;
+    }
+    
+    // Event delegation untuk tombol hapus
+    document.addEventListener('click', function(e) {
+        if (e.target.closest('.file-remove')) {
+            const removeBtn = e.target.closest('.file-remove');
+            const id = removeBtn.getAttribute('data-id');
+            if (id) {
+                removeFile(id);
+            }
+        }
+    });
+    
     // Fungsi untuk memperbarui status tombol
     function updateButtons() {
         if (images.length > 0) {
             convertBtn.disabled = false;
+            previewBtn.disabled = false;
             clearBtn.disabled = false;
         } else {
             convertBtn.disabled = true;
+            previewBtn.disabled = true;
             clearBtn.disabled = true;
         }
     }
@@ -302,6 +353,16 @@ document.addEventListener('DOMContentLoaded', function() {
             progressContainer.classList.add('d-none');
             showNotification('Semua file telah dihapus', 'info');
         }
+    });
+    
+    // Event listener untuk tombol preview
+    previewBtn.addEventListener('click', function() {
+        if (images.length === 0) {
+            showNotification('Silakan upload gambar terlebih dahulu', 'warning');
+            return;
+        }
+        
+        showNotification('Fitur pratinjau akan segera hadir', 'info');
     });
     
     // Event listener untuk tombol convert
@@ -320,12 +381,38 @@ document.addEventListener('DOMContentLoaded', function() {
         progressPercent.textContent = '0%';
         progressText.textContent = 'Menyiapkan file untuk konversi...';
         convertBtn.disabled = true;
+        previewBtn.disabled = true;
         clearBtn.disabled = true;
         
         try {
             // Inisialisasi jsPDF
             const { jsPDF } = window.jspdf;
-            const pdf = new jsPDF();
+            
+            // Dapatkan pengaturan
+            const pageSize = pageSizeSelect.value;
+            const orientation = pageOrientationSelect.value;
+            const quality = parseFloat(imageQualitySelect.value);
+            const margins = {
+                top: parseInt(marginTopInput.value) || 10,
+                bottom: parseInt(marginBottomInput.value) || 10,
+                left: parseInt(marginLeftInput.value) || 10,
+                right: parseInt(marginRightInput.value) || 10
+            };
+            
+            // Buat PDF baru dengan pengaturan
+            const pdf = new jsPDF({
+                orientation: orientation,
+                unit: 'mm',
+                format: pageSize
+            });
+            
+            // Dapatkan dimensi halaman
+            const pageWidth = pdf.internal.pageSize.getWidth();
+            const pageHeight = pdf.internal.pageSize.getHeight();
+            
+            // Area gambar yang tersedia setelah margin
+            const contentWidth = pageWidth - margins.left - margins.right;
+            const contentHeight = pageHeight - margins.top - margins.bottom;
             
             // Konversi setiap gambar
             for (let i = 0; i < images.length; i++) {
@@ -348,33 +435,25 @@ document.addEventListener('DOMContentLoaded', function() {
                     img.src = images[i].url;
                 });
                 
-                // Hitung dimensi untuk halaman PDF (A4: 210x297 mm)
-                const pageWidth = pdf.internal.pageSize.getWidth();
-                const pageHeight = pdf.internal.pageSize.getHeight();
-                
-                // Hitung skala untuk menyesuaikan gambar dengan halaman
+                // Hitung skala untuk menyesuaikan gambar dengan area konten
                 const imgWidth = img.width;
                 const imgHeight = img.height;
                 
-                let width = pageWidth - 20; // Margin kiri dan kanan
+                let width = contentWidth;
                 let height = (imgHeight * width) / imgWidth;
                 
-                // Jika gambar terlalu tinggi, sesuaikan dengan tinggi halaman
-                if (height > pageHeight - 20) {
-                    height = pageHeight - 20; // Margin atas dan bawah
+                // Jika gambar terlalu tinggi, sesuaikan dengan tinggi konten
+                if (height > contentHeight) {
+                    height = contentHeight;
                     width = (imgWidth * height) / imgHeight;
                 }
                 
                 // Hitung posisi tengah
-                const x = (pageWidth - width) / 2;
-                const y = (pageHeight - height) / 2;
+                const x = margins.left + (contentWidth - width) / 2;
+                const y = margins.top + (contentHeight - height) / 2;
                 
-                // Tambahkan gambar ke PDF
-                pdf.addImage(images[i].url, 'JPEG', x, y, width, height);
-                
-                // Tambahkan nomor halaman
-                pdf.setFontSize(10);
-                pdf.text(`Halaman ${i + 1} dari ${images.length}`, pageWidth / 2, pageHeight - 10, { align: 'center' });
+                // Tambahkan gambar ke PDF dengan kualitas yang dipilih
+                pdf.addImage(images[i].url, 'JPEG', x, y, width, height, undefined, 'FAST');
             }
             
             // Update progress ke 100%
@@ -386,15 +465,11 @@ document.addEventListener('DOMContentLoaded', function() {
             const pdfFileName = pdfNameInput.value.trim() || 'convertify-document';
             pdf.save(`${pdfFileName}.pdf`);
             
-            // Update statistik konversi
-            conversions++;
-            conversionCount.textContent = conversions;
-            localStorage.setItem('convertify_conversions', conversions);
-            
             // Reset progress setelah beberapa saat
             setTimeout(() => {
                 progressContainer.classList.add('d-none');
                 convertBtn.disabled = false;
+                previewBtn.disabled = false;
                 clearBtn.disabled = false;
                 
                 // Tampilkan pesan sukses
@@ -407,6 +482,7 @@ document.addEventListener('DOMContentLoaded', function() {
             progressBar.style.width = '0%';
             progressPercent.textContent = '0%';
             convertBtn.disabled = false;
+            previewBtn.disabled = false;
             clearBtn.disabled = false;
             
             setTimeout(() => {
@@ -416,26 +492,6 @@ document.addEventListener('DOMContentLoaded', function() {
             showNotification('Terjadi kesalahan saat mengonversi gambar. Silakan coba lagi.', 'error');
         }
     }
-    
-    // Event delegation untuk tombol hapus (backup method)
-    document.addEventListener('click', function(e) {
-        if (e.target.closest('.file-remove')) {
-            const removeBtn = e.target.closest('.file-remove');
-            const id = removeBtn.getAttribute('data-id');
-            if (id) {
-                removeFile(id);
-            }
-        }
-    });
-    
-    // Event listener untuk back to top button
-    backToTopBtn.addEventListener('click', function(e) {
-        e.preventDefault();
-        window.scrollTo({
-            top: 0,
-            behavior: 'smooth'
-        });
-    });
     
     // Fungsi untuk menampilkan notifikasi
     function showNotification(message, type = 'info') {
@@ -496,62 +552,31 @@ document.addEventListener('DOMContentLoaded', function() {
         return text.substring(0, maxLength) + '...';
     }
     
-    // Tambahkan style untuk notifikasi jika belum ada
-    if (!document.querySelector('#notification-styles')) {
-        const notificationStyle = document.createElement('style');
-        notificationStyle.id = 'notification-styles';
-        notificationStyle.textContent = `
-            .notification {
-                position: fixed;
-                top: 20px;
-                right: 20px;
-                background: white;
-                padding: 1rem 1.5rem;
-                border-radius: 10px;
-                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-                display: flex;
-                align-items: center;
-                gap: 0.8rem;
-                z-index: 9999;
-                transform: translateX(150%);
-                transition: transform 0.3s ease;
-                max-width: 350px;
+    // Validasi input margin
+    [marginTopInput, marginBottomInput, marginLeftInput, marginRightInput].forEach(input => {
+        input.addEventListener('change', function() {
+            let value = parseInt(this.value);
+            if (isNaN(value) || value < 0) {
+                this.value = 0;
+            } else if (value > 50) {
+                this.value = 50;
+                showNotification('Margin maksimal 50mm', 'warning');
             }
-            
-            .notification.show {
-                transform: translateX(0);
-            }
-            
-            .notification i {
-                font-size: 1.2rem;
-            }
-            
-            .notification-success {
-                border-left: 4px solid #2ecc71;
-                color: #27ae60;
-            }
-            
-            .notification-error {
-                border-left: 4px solid #e74c3c;
-                color: #c0392b;
-            }
-            
-            .notification-warning {
-                border-left: 4px solid #f39c12;
-                color: #d35400;
-            }
-            
-            .notification-info {
-                border-left: 4px solid #3498db;
-                color: #2980b9;
-            }
-        `;
-        document.head.appendChild(notificationStyle);
-    }
+        });
+    });
     
-    // Inisialisasi tooltips Bootstrap jika ada
-    const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-    if (tooltipTriggerList.length > 0 && typeof bootstrap !== 'undefined') {
+    // Update year in footer
+    const currentYear = new Date().getFullYear();
+    const yearElements = document.querySelectorAll('footer p');
+    yearElements.forEach(element => {
+        if (element.textContent.includes('2023')) {
+            element.textContent = element.textContent.replace('2023', currentYear);
+        }
+    });
+    
+    // Initialize tooltips if Bootstrap is available
+    if (typeof bootstrap !== 'undefined') {
+        const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
         tooltipTriggerList.map(function (tooltipTriggerEl) {
             return new bootstrap.Tooltip(tooltipTriggerEl);
         });
