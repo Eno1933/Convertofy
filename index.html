@@ -2,10 +2,29 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <link rel="icon" type="image/png" href="/logo.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Convertofy - Precision PDF Tools</title>
+    
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <script>
+      (function() {
+        try {
+          const savedTheme = localStorage.getItem('theme');
+          const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+          
+          // Jika user simpan 'dark' ATAU (belum ada simpanan dan sistem komputer user memang dark)
+          if (savedTheme === 'dark' || (!savedTheme && supportDarkMode)) {
+            document.documentElement.classList.add('dark');
+          } else {
+            document.documentElement.classList.remove('dark');
+          }
+        } catch (e) {
+          console.error('Theme initialization failed', e);
+        }
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>

@@ -1,31 +1,69 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Manrope:wght@500;700;800&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   :root {
-    --primary: #00458e;
-    --primary-container: #1e5db0;
-    --secondary: #006b5f;
-    --secondary-container: #6cf5e1;
-    --surface: #f7f9fb;
-    --surface-lowest: #ffffff;
-    --surface-low: #f2f4f6;
-    --surface-high: #e0e3e5;
-    --on-surface: #191c1e;
-    --on-surface-variant: #424752;
+    --primary: 0 69 142;           /* #00458e */
+    --primary-container: 30 93 176; /* #1e5db0 */
+    --secondary: 0 107 95;          /* #006b5f */
+    --secondary-container: 108 245 225; /* #6cf5e1 */
+    --secondary-fixed: 78 219 200;  /* #4edbc8 */
+    
+    --surface: 247 249 251;         /* #f7f9fb */
+    --surface-lowest: 255 255 255;  /* #ffffff */
+    --surface-low: 242 244 246;     /* #f2f4f6 */
+    --surface-highest: 224 227 229; /* #e0e3e5 */
+    
+    --on-surface: 25 28 30;         /* #191c1e */
+    --on-surface-variant: 66 71 82; /* #424752 */
+    --outline-variant: 194 198 211; /* #c2c6d3 */
+  }
+
+  .dark {
+    --primary: 96 165 250; 
+    --primary-container: 59 130 246;
+    --secondary: 108 245 225;
+    --secondary-container: 0 107 95;
+    --secondary-fixed: 78 219 200;
+    
+    --surface: 12 14 16;
+    --surface-lowest: 20 23 26;
+    --surface-low: 16 19 22;
+    --surface-highest: 30 34 39;
+    
+    --on-surface: 247 249 251;
+    --on-surface-variant: 150 158 170;
+    --outline-variant: 45 50 58;
   }
 
   body {
-    @apply bg-surface font-inter text-on-surface;
+    background-color: rgb(var(--surface));
+    color: rgb(var(--on-surface));
+    @apply antialiased transition-colors duration-500 overflow-x-hidden;
   }
 }
 
 @layer utilities {
-  .shadow-ambient {
-    box-shadow: 0 12px 40px rgba(25, 28, 30, 0.06);
+  .ghost-border {
+    @apply border border-outline-variant/20;
   }
-  .border-ghost {
-    outline: 1px solid rgba(194, 198, 211, 0.15);
+  
+  .architect-grid {
+    background-size: 40px 40px;
+    background-image: 
+      linear-gradient(to right, rgb(var(--outline-variant) / 0.15) 1px, transparent 1px),
+      linear-gradient(to bottom, rgb(var(--outline-variant) / 0.15) 1px, transparent 1px);
   }
+
+  .glass-panel {
+    @apply bg-surface-lowest/70 backdrop-blur-xl ghost-border shadow-ambient;
+  }
+
+  /* Delay utilities for staggered animations */
+  .delay-100 { animation-delay: 100ms; }
+  .delay-200 { animation-delay: 200ms; }
+  .delay-300 { animation-delay: 300ms; }
 }
