@@ -1,0 +1,31 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --primary: #00458e;
+    --primary-container: #1e5db0;
+    --secondary: #006b5f;
+    --secondary-container: #6cf5e1;
+    --surface: #f7f9fb;
+    --surface-lowest: #ffffff;
+    --surface-low: #f2f4f6;
+    --surface-high: #e0e3e5;
+    --on-surface: #191c1e;
+    --on-surface-variant: #424752;
+  }
+
+  body {
+    @apply bg-surface font-inter text-on-surface;
+  }
+}
+
+@layer utilities {
+  .shadow-ambient {
+    box-shadow: 0 12px 40px rgba(25, 28, 30, 0.06);
+  }
+  .border-ghost {
+    outline: 1px solid rgba(194, 198, 211, 0.15);
+  }
+}
