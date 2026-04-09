@@ -5,6 +5,7 @@ import {
   ArrowLeft, Upload, X, FileText, CheckCircle, AlertCircle, 
   Download, Scissors, FileUp, Layers
 } from 'lucide-react';
+import { useLanguage } from '../context/LanguageContext';
 
 // ==================== UI COMPONENTS ====================
 const Button = ({ children, variant = "primary", className = "", onClick, disabled = false }) => {
@@ -23,6 +24,7 @@ const Button = ({ children, variant = "primary", className = "", onClick, disabl
 
 // ==================== MAIN SPLIT TOOL ====================
 const SplitTool = ({ onBack }) => {
+  const { t } = useLanguage();
   const [file, setFile] = useState(null);
   const [splitMode, setSplitMode] = useState('range');
   const [ranges, setRanges] = useState('');
@@ -38,7 +40,7 @@ const SplitTool = ({ onBack }) => {
     setRanges('');
     const selectedFile = acceptedFiles[0];
     if (!selectedFile || selectedFile.type !== 'application/pdf') {
-      setError('Please upload a valid PDF file.');
+      setError(t('split.errorInvalidFile'));
       return;
     }
     const arrayBuffer = await selectedFile.arrayBuffer();
@@ -51,7 +53,7 @@ const SplitTool = ({ onBack }) => {
       arrayBuffer,
     });
     setPdfPages(pages);
-  }, []);
+  }, [t]);
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
@@ -88,7 +90,6 @@ const SplitTool = ({ onBack }) => {
     return Array.from(selectedPages).sort((a,b) => a-b);
   };
 
-  // ✅ Perbaikan: gunakan newPdf.copyPages(sourcePdf, indices)
   const extractPages = async (sourcePdf, pageIndices, outputName) => {
     const newPdf = await PDFDocument.create();
     const copiedPages = await newPdf.copyPages(sourcePdf, pageIndices);
@@ -101,7 +102,7 @@ const SplitTool = ({ onBack }) => {
 
   const handleSplit = async () => {
     if (!file) {
-      setError('Please upload a PDF file first.');
+      setError(t('split.errorNoFile'));
       return;
     }
 
@@ -124,13 +125,13 @@ const SplitTool = ({ onBack }) => {
         setResults(extracted);
       } else {
         if (!ranges.trim()) {
-          setError('Please enter page ranges (e.g., 1-3,5,7-9)');
+          setError(t('split.errorRangeRequired'));
           setProcessing(false);
           return;
         }
         const pagesToExtract = parseRanges(ranges, totalPages);
         if (pagesToExtract.length === 0) {
-          setError('No valid pages selected.');
+          setError(t('split.errorNoValidPages'));
           setProcessing(false);
           return;
         }
@@ -140,7 +141,7 @@ const SplitTool = ({ onBack }) => {
       }
     } catch (err) {
       console.error(err);
-      setError(err.message || 'Failed to split PDF. Please check your input.');
+      setError(err.message || t('split.errorGeneric'));
     } finally {
       setProcessing(false);
     }
@@ -173,13 +174,13 @@ const SplitTool = ({ onBack }) => {
           className="flex items-center gap-2 text-on-surface-variant hover:text-primary transition-colors mb-8 group"
         >
           <ArrowLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
-          <span>Back to Tools</span>
+          <span>{t('common.backToTools')}</span>
         </button>
 
         <div className="bg-surface-lowest rounded-2xl shadow-ambient overflow-hidden">
           <div className="p-8 border-b border-outline-variant/20">
-            <h1 className="font-display text-3xl md:text-4xl font-bold text-on-surface">Split PDF</h1>
-            <p className="text-on-surface-variant mt-2">Extract specific pages or split every page into separate PDF files.</p>
+            <h1 className="font-display text-3xl md:text-4xl font-bold text-on-surface">{t('split.title')}</h1>
+            <p className="text-on-surface-variant mt-2">{t('split.description')}</p>
           </div>
 
           <div className="p-8">
@@ -192,9 +193,9 @@ const SplitTool = ({ onBack }) => {
               >
                 <input {...getInputProps()} />
                 <Upload className="mx-auto text-on-surface-variant mb-4" size={40} strokeWidth={1.5} />
-                <p className="text-on-surface font-medium">Drag & drop a PDF file here</p>
-                <p className="text-on-surface-variant text-sm mt-1">or click to browse</p>
-                <p className="text-xs text-on-surface-variant/70 mt-4">Maximum file size: 100MB</p>
+                <p className="text-on-surface font-medium">{t('split.dropzone')}</p>
+                <p className="text-on-surface-variant text-sm mt-1">{t('split.orClick')}</p>
+                <p className="text-xs text-on-surface-variant/70 mt-4">{t('split.maxSize')}</p>
               </div>
             ) : (
               <div className="space-y-6">
@@ -203,7 +204,7 @@ const SplitTool = ({ onBack }) => {
                     <FileText className="text-primary" size={24} />
                     <div>
                       <p className="font-medium text-on-surface">{file.name}</p>
-                      <p className="text-xs text-on-surface-variant">{formatBytes(file.size)} • {file.pages} pages</p>
+                      <p className="text-xs text-on-surface-variant">{formatBytes(file.size)} • {file.pages} {t('split.pages')}</p>
                     </div>
                   </div>
                   <button onClick={removeFile} className="p-1 rounded-md text-on-surface-variant hover:text-red-500">
@@ -217,21 +218,21 @@ const SplitTool = ({ onBack }) => {
                     className={`flex-1 flex items-center justify-center gap-2 px-4 py-2 rounded-lg transition-all ${splitMode === 'range' ? 'bg-primary text-white shadow-ambient' : 'bg-surface-highest/30 text-on-surface-variant hover:bg-surface-highest/50'}`}
                   >
                     <Layers size={18} />
-                    Extract by Range
+                    {t('split.range')}
                   </button>
                   <button
                     onClick={() => setSplitMode('every')}
                     className={`flex-1 flex items-center justify-center gap-2 px-4 py-2 rounded-lg transition-all ${splitMode === 'every' ? 'bg-primary text-white shadow-ambient' : 'bg-surface-highest/30 text-on-surface-variant hover:bg-surface-highest/50'}`}
                   >
                     <Scissors size={18} />
-                    Extract Every Page
+                    {t('split.every')}
                   </button>
                 </div>
 
                 {splitMode === 'range' && (
                   <div>
                     <label className="block text-sm font-medium text-on-surface mb-2">
-                      Page Ranges <span className="text-on-surface-variant text-xs">(e.g., 1-3,5,7-9)</span>
+                      {t('split.rangeLabel')} <span className="text-on-surface-variant text-xs">{t('split.rangeExample')}</span>
                     </label>
                     <input
                       type="text"
@@ -240,14 +241,14 @@ const SplitTool = ({ onBack }) => {
                       placeholder="1-3,5,7-9"
                       className="w-full px-4 py-2 bg-surface-low border border-outline-variant/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 text-on-surface"
                     />
-                    <p className="text-xs text-on-surface-variant mt-1">Total pages: {pdfPages}</p>
+                    <p className="text-xs text-on-surface-variant mt-1">{t('split.totalPages')} {pdfPages}</p>
                   </div>
                 )}
 
                 {splitMode === 'every' && (
                   <div className="p-3 bg-secondary/10 rounded-lg flex items-center gap-2 text-secondary text-sm">
                     <FileUp size={16} />
-                    <span>This will create {pdfPages} separate PDF files (one per page).</span>
+                    <span>{t('split.everyInfo', { pages: pdfPages })}</span>
                   </div>
                 )}
 
@@ -260,14 +261,14 @@ const SplitTool = ({ onBack }) => {
 
                 {!processing && results.length === 0 && (
                   <Button variant="primary" onClick={handleSplit} className="w-full sm:w-auto">
-                    Split PDF
+                    {t('split.split')}
                   </Button>
                 )}
 
                 {processing && (
                   <div className="space-y-3">
                     <div className="flex justify-between text-sm text-on-surface-variant">
-                      <span>Splitting...</span>
+                      <span>{t('split.splitting')}</span>
                       <span>{Math.round(progress)}%</span>
                     </div>
                     <div className="h-2 bg-surface-high rounded-full overflow-hidden">
@@ -279,10 +280,10 @@ const SplitTool = ({ onBack }) => {
                 {results.length > 0 && !processing && (
                   <div className="space-y-4">
                     <div className="flex justify-between items-center">
-                      <h3 className="font-semibold text-on-surface">Split Results ({results.length} file{results.length > 1 ? 's' : ''})</h3>
+                      <h3 className="font-semibold text-on-surface">{t('split.results')} ({results.length} {results.length > 1 ? t('split.files') : t('split.file')})</h3>
                       {results.length > 1 && (
                         <Button variant="secondary" onClick={downloadAll} className="text-sm py-1.5 px-3">
-                          Download All
+                          {t('split.downloadAll')}
                         </Button>
                       )}
                     </div>
@@ -293,10 +294,7 @@ const SplitTool = ({ onBack }) => {
                             <FileText size={18} className="text-primary" />
                             <span className="text-sm text-on-surface truncate max-w-[200px] md:max-w-md">{res.name}</span>
                           </div>
-                          <button
-                            onClick={() => downloadFile(res)}
-                            className="p-1.5 rounded-md text-primary hover:bg-primary/10 transition"
-                          >
+                          <button onClick={() => downloadFile(res)} className="p-1.5 rounded-md text-primary hover:bg-primary/10 transition">
                             <Download size={18} />
                           </button>
                         </div>
@@ -304,7 +302,7 @@ const SplitTool = ({ onBack }) => {
                     </div>
                     <div className="p-3 bg-secondary/10 rounded-lg flex items-center gap-2 text-secondary">
                       <CheckCircle size={18} />
-                      <span className="text-sm">Split complete! Click on any file to download.</span>
+                      <span className="text-sm">{t('split.complete')}</span>
                     </div>
                   </div>
                 )}

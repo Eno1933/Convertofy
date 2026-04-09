@@ -1,0 +1,162 @@
+{
+  "nav": {
+    "tools": "All PDF Tools",
+    "security": "Security",
+    "howItWorks": "How it works"
+  },
+  "hero": {
+    "badge": "Privacy-First PDF Engine",
+    "title": "Every tool you need to master",
+    "titleHighlight": "your documents.",
+    "description": "Merge, split, compress, and convert PDFs with the world's most secure local processing engine. No uploads, no waiting, just precision.",
+    "explore": "Explore Tools",
+    "howItWorks": "How it works"
+  },
+  "tools": {
+    "title": "The Instrument Rack.",
+    "subtitle": "Professional-grade PDF tools running entirely on your local machine.",
+    "launch": "Launch Tool",
+    "merge": "Merge PDF",
+    "mergeDesc": "Combine multiple PDFs into one unified document in seconds.",
+    "split": "Split PDF",
+    "splitDesc": "Extract specific pages or separate every page into independent files.",
+    "compress": "Compress PDF",
+    "compressDesc": "Reduce file size while maintaining maximum visual quality.",
+    "pdfToWord": "PDF to Word",
+    "pdfToWordDesc": "Convert PDF documents to editable Docx with high accuracy.",
+    "wordToPdf": "Word to PDF",
+    "wordToPdfDesc": "Transform Word files into professional, non-editable PDFs.",
+    "protect": "Protect PDF",
+    "protectDesc": "Encrypt your documents with military-grade password protection.",
+    "organize": "Organize PDF",
+    "organizeDesc": "Sort, add, or delete pages from your document visually.",
+    "pdfToJpg": "PDF to JPG",
+    "pdfToJpgDesc": "Extract every image or convert entire pages into high-res JPGs."
+  },
+  "architecture": {
+    "title": "Unrivaled Privacy.",
+    "subtitle": "Unlike other PDF tools, Convertofy doesn't own a server. Your data stays in the only place it should: with you.",
+    "clientSide": "Client-Side Only",
+    "clientSideDesc": "Your documents are processed in the browser memory. They are never uploaded, stored, or seen by anyone—including us.",
+    "instant": "Instantaneous",
+    "instantDesc": "Processing at the speed of your hardware. No network bottlenecks.",
+    "secure": "Secure Node",
+    "secureDesc": "Military-grade document handling within a sandboxed environment.",
+    "vector": "Vector Precision",
+    "vectorDesc": "Every conversion maintains 100% of the original vector data and text hierarchy. No blurry results."
+  },
+  "footer": {
+    "copyright": "Privacy-focused PDF Utility.",
+    "local": "100% LOCAL"
+  },
+  "merge": {
+    "title": "Merge PDF",
+    "description": "Combine multiple PDF files into a single document. Drag and drop to reorder.",
+    "dropzone": "Drag & drop PDF files here",
+    "orClick": "or click to browse",
+    "maxSize": "Maximum file size: 100MB",
+    "filesToMerge": "Files to merge",
+    "clearAll": "Clear all",
+    "merge": "Merge Files",
+    "merging": "Merging...",
+    "download": "Download Merged PDF",
+    "mergeAnother": "Merge Another",
+    "complete": "Merge complete! Your PDF is ready to download.",
+    "errorMinFiles": "Please upload at least 2 PDF files to merge.",
+    "errorGeneric": "Failed to merge PDFs. Please try again.",
+    "pages": "pages"
+  },
+  "split": {
+    "title": "Split PDF",
+    "description": "Extract specific pages or split every page into separate PDF files.",
+    "dropzone": "Drag & drop a PDF file here",
+    "orClick": "or click to browse",
+    "maxSize": "Maximum file size: 100MB",
+    "range": "Extract by Range",
+    "every": "Extract Every Page",
+    "rangeLabel": "Page Ranges",
+    "rangeExample": "(e.g., 1-3,5,7-9)",
+    "totalPages": "Total pages:",
+    "everyInfo": "This will create {pages} separate PDF files (one per page).",
+    "split": "Split PDF",
+    "splitting": "Splitting...",
+    "results": "Split Results",
+    "downloadAll": "Download All",
+    "complete": "Split complete! Click on any file to download.",
+    "errorInvalidFile": "Please upload a valid PDF file.",
+    "errorNoFile": "Please upload a PDF file first.",
+    "errorRangeRequired": "Please enter page ranges (e.g., 1-3,5,7-9)",
+    "errorNoValidPages": "No valid pages selected.",
+    "errorGeneric": "Failed to split PDF. Please check your input.",
+    "pages": "pages",
+    "file": "file",
+    "files": "files"
+  },
+  "comingSoon": {
+    "title": "Coming Soon",
+    "message": "is currently under development. We're working hard to bring it to you as soon as possible.",
+    "gotIt": "Got it"
+  },
+  "common": {
+    "backToTools": "Back to Tools"
+  },
+  "howItWorks": {
+  "title": "How It Works",
+  "subtitle": "Simple, fast, and secure PDF processing right in your browser.",
+  "stepsTitle": "Three Simple Steps",
+  "step1": {
+    "title": "Upload Your PDF",
+    "desc": "Drag and drop your PDF files or click to browse. No account required."
+  },
+  "step2": {
+    "title": "Choose Your Tool",
+    "desc": "Select from Merge, Split, Compress, Convert, and more. Adjust settings as needed."
+  },
+  "step3": {
+    "title": "Download Result",
+    "desc": "Your file is processed instantly. Download the result with one click."
+  },
+  "whyTitle": "Why Choose Convertofy?",
+  "privacy": {
+    "title": "100% Private",
+    "desc": "Files never leave your device. No uploads, no servers."
+  },
+  "speed": {
+    "title": "Lightning Fast",
+    "desc": "Process at the speed of your hardware. No waiting in queues."
+  },
+  "security": {
+    "title": "Secure",
+    "desc": "Encrypted processing in a sandboxed environment."
+  },
+  "ctaTitle": "Ready to master your documents?",
+  "ctaButton": "Start Now – It's Free"
+},
+"compress": {
+  "title": "Compress PDF",
+  "description": "Reduce PDF file size while maintaining quality. Process runs 100% in your browser.",
+  "dropzone": "Drag & drop a PDF file here",
+  "orClick": "or click to browse",
+  "maxSize": "Maximum file size: 100MB",
+  "originalSize": "Original size",
+  "compressedSize": "Compressed size",
+  "compressionLevel": "Compression Level",
+  "low": "Low",
+  "lowDesc": "Light compression, good quality",
+  "medium": "Medium",
+  "mediumDesc": "Balanced quality & size",
+  "high": "High",
+  "highDesc": "Maximum size reduction",
+  "compress": "Compress PDF",
+  "compressing": "Compressing...",
+  "download": "Download Compressed PDF",
+  "compressAnother": "Compress Another",
+  "complete": "Compression complete! Your PDF is ready to download.",
+  "saved": "saved",
+  "spaceSaved": "space saved",
+  "infoNote": "Compression removes metadata and optimizes PDF structure. For images, higher compression may affect quality.",
+  "errorInvalidFile": "Please upload a valid PDF file.",
+  "errorNoFile": "Please upload a PDF file first.",
+  "errorGeneric": "Failed to compress PDF. Please try again."
+}
+}

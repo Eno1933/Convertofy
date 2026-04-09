@@ -1,0 +1,162 @@
+{
+  "nav": {
+    "tools": "Semua Alat PDF",
+    "security": "Keamanan",
+    "howItWorks": "Cara Kerja"
+  },
+  "hero": {
+    "badge": "Mesin PDF Prioritas Privasi",
+    "title": "Setiap alat yang Anda butuhkan untuk menguasai",
+    "titleHighlight": "dokumen Anda.",
+    "description": "Gabungkan, pisahkan, kompres, dan konversi PDF dengan mesin pemrosesan lokal paling aman di dunia. Tanpa unggahan, tanpa menunggu, hanya presisi.",
+    "explore": "Jelajahi Alat",
+    "howItWorks": "Cara Kerja"
+  },
+  "tools": {
+    "title": "Rak Instrumen.",
+    "subtitle": "Alat PDF tingkat profesional berjalan sepenuhnya di mesin lokal Anda.",
+    "launch": "Buka Alat",
+    "merge": "Gabungkan PDF",
+    "mergeDesc": "Gabungkan beberapa PDF menjadi satu dokumen dalam hitungan detik.",
+    "split": "Pisahkan PDF",
+    "splitDesc": "Ekstrak halaman tertentu atau pisahkan setiap halaman menjadi file terpisah.",
+    "compress": "Kompres PDF",
+    "compressDesc": "Kurangi ukuran file sambil mempertahankan kualitas visual maksimal.",
+    "pdfToWord": "PDF ke Word",
+    "pdfToWordDesc": "Konversi dokumen PDF ke Docx yang dapat diedit dengan akurasi tinggi.",
+    "wordToPdf": "Word ke PDF",
+    "wordToPdfDesc": "Ubah file Word menjadi PDF profesional yang tidak dapat diedit.",
+    "protect": "Proteksi PDF",
+    "protectDesc": "Enkripsi dokumen Anda dengan perlindungan kata sandi tingkat militer.",
+    "organize": "Atur PDF",
+    "organizeDesc": "Urutkan, tambah, atau hapus halaman dari dokumen secara visual.",
+    "pdfToJpg": "PDF ke JPG",
+    "pdfToJpgDesc": "Ekstrak setiap gambar atau konversi seluruh halaman menjadi JPG resolusi tinggi."
+  },
+  "architecture": {
+    "title": "Privasi Tanpa Tanding.",
+    "subtitle": "Tidak seperti alat PDF lainnya, Convertofy tidak memiliki server. Data Anda tetap di satu-satunya tempat yang seharusnya: bersama Anda.",
+    "clientSide": "Hanya Sisi Klien",
+    "clientSideDesc": "Dokumen Anda diproses dalam memori browser. Tidak pernah diunggah, disimpan, atau dilihat oleh siapa pun—termasuk kami.",
+    "instant": "Instan",
+    "instantDesc": "Pemrosesan secepat perangkat keras Anda. Tanpa hambatan jaringan.",
+    "secure": "Node Aman",
+    "secureDesc": "Penanganan dokumen tingkat militer dalam lingkungan terisolasi.",
+    "vector": "Presisi Vektor",
+    "vectorDesc": "Setiap konversi mempertahankan 100% data vektor asli dan hierarki teks. Tidak ada hasil buram."
+  },
+  "footer": {
+    "copyright": "Utilitas PDF berfokus privasi.",
+    "local": "100% LOKAL"
+  },
+  "merge": {
+    "title": "Gabungkan PDF",
+    "description": "Gabungkan beberapa file PDF menjadi satu dokumen. Seret dan lepas untuk mengatur ulang.",
+    "dropzone": "Seret & lepas file PDF di sini",
+    "orClick": "atau klik untuk memilih",
+    "maxSize": "Ukuran file maksimal: 100MB",
+    "filesToMerge": "File yang akan digabung",
+    "clearAll": "Hapus semua",
+    "merge": "Gabungkan File",
+    "merging": "Menggabungkan...",
+    "download": "Unduh PDF Hasil Gabungan",
+    "mergeAnother": "Gabung Lagi",
+    "complete": "Penggabungan selesai! PDF Anda siap diunduh.",
+    "errorMinFiles": "Harap unggah minimal 2 file PDF untuk digabung.",
+    "errorGeneric": "Gagal menggabungkan PDF. Silakan coba lagi.",
+    "pages": "halaman"
+  },
+  "split": {
+    "title": "Pisahkan PDF",
+    "description": "Ekstrak halaman tertentu atau pisahkan setiap halaman menjadi file PDF terpisah.",
+    "dropzone": "Seret & lepas file PDF di sini",
+    "orClick": "atau klik untuk memilih",
+    "maxSize": "Ukuran file maksimal: 100MB",
+    "range": "Ekstrak Berdasarkan Rentang",
+    "every": "Ekstrak Setiap Halaman",
+    "rangeLabel": "Rentang Halaman",
+    "rangeExample": "(contoh: 1-3,5,7-9)",
+    "totalPages": "Total halaman:",
+    "everyInfo": "Ini akan membuat {pages} file PDF terpisah (satu per halaman).",
+    "split": "Pisahkan PDF",
+    "splitting": "Memisahkan...",
+    "results": "Hasil Pemisahan",
+    "downloadAll": "Unduh Semua",
+    "complete": "Pemisahan selesai! Klik file apa pun untuk mengunduh.",
+    "errorInvalidFile": "Harap unggah file PDF yang valid.",
+    "errorNoFile": "Harap unggah file PDF terlebih dahulu.",
+    "errorRangeRequired": "Harap masukkan rentang halaman (contoh: 1-3,5,7-9)",
+    "errorNoValidPages": "Tidak ada halaman valid yang dipilih.",
+    "errorGeneric": "Gagal memisahkan PDF. Periksa input Anda.",
+    "pages": "halaman",
+    "file": "berkas",
+    "files": "berkas"
+  },
+  "comingSoon": {
+    "title": "Segera Hadir",
+    "message": "sedang dalam pengembangan. Kami bekerja keras untuk menghadirkannya sesegera mungkin.",
+    "gotIt": "Mengerti"
+  },
+  "common": {
+    "backToTools": "Kembali ke Alat"
+  },
+  "howItWorks": {
+  "title": "Cara Kerja",
+  "subtitle": "Pemrosesan PDF yang sederhana, cepat, dan aman langsung di browser Anda.",
+  "stepsTitle": "Tiga Langkah Sederhana",
+  "step1": {
+    "title": "Unggah PDF Anda",
+    "desc": "Seret dan lepas file PDF Anda atau klik untuk memilih. Tidak perlu akun."
+  },
+  "step2": {
+    "title": "Pilih Alat Anda",
+    "desc": "Pilih dari Gabungkan, Pisahkan, Kompres, Konversi, dan lainnya. Sesuaikan pengaturan sesuai kebutuhan."
+  },
+  "step3": {
+    "title": "Unduh Hasil",
+    "desc": "File Anda diproses secara instan. Unduh hasilnya dengan satu klik."
+  },
+  "whyTitle": "Mengapa Memilih Convertofy?",
+  "privacy": {
+    "title": "100% Privat",
+    "desc": "File tidak pernah meninggalkan perangkat Anda. Tanpa unggahan, tanpa server."
+  },
+  "speed": {
+    "title": "Sangat Cepat",
+    "desc": "Pemrosesan secepat perangkat keras Anda. Tanpa antrian."
+  },
+  "security": {
+    "title": "Aman",
+    "desc": "Pemrosesan terenkripsi dalam lingkungan terisolasi."
+  },
+  "ctaTitle": "Siap menguasai dokumen Anda?",
+  "ctaButton": "Mulai Sekarang – Gratis"
+},
+"compress": {
+  "title": "Kompres PDF",
+  "description": "Kurangi ukuran file PDF sambil mempertahankan kualitas. Proses 100% di browser Anda.",
+  "dropzone": "Seret & lepas file PDF di sini",
+  "orClick": "atau klik untuk memilih",
+  "maxSize": "Ukuran file maksimal: 100MB",
+  "originalSize": "Ukuran asli",
+  "compressedSize": "Ukuran terkompres",
+  "compressionLevel": "Tingkat Kompresi",
+  "low": "Rendah",
+  "lowDesc": "Kompresi ringan, kualitas bagus",
+  "medium": "Sedang",
+  "mediumDesc": "Keseimbangan kualitas & ukuran",
+  "high": "Tinggi",
+  "highDesc": "Pengurangan ukuran maksimal",
+  "compress": "Kompres PDF",
+  "compressing": "Mengompres...",
+  "download": "Unduh PDF Terkompres",
+  "compressAnother": "Kompres Lagi",
+  "complete": "Kompresi selesai! PDF Anda siap diunduh.",
+  "saved": "terhemat",
+  "spaceSaved": "ruang",
+  "infoNote": "Kompresi menghapus metadata dan mengoptimalkan struktur PDF. Untuk gambar, kompresi tinggi dapat mempengaruhi kualitas.",
+  "errorInvalidFile": "Harap unggah file PDF yang valid.",
+  "errorNoFile": "Harap unggah file PDF terlebih dahulu.",
+  "errorGeneric": "Gagal mengompres PDF. Silakan coba lagi."
+}
+}
