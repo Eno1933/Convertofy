@@ -101,62 +101,81 @@
     "backToTools": "Kembali ke Alat"
   },
   "howItWorks": {
-  "title": "Cara Kerja",
-  "subtitle": "Pemrosesan PDF yang sederhana, cepat, dan aman langsung di browser Anda.",
-  "stepsTitle": "Tiga Langkah Sederhana",
-  "step1": {
-    "title": "Unggah PDF Anda",
-    "desc": "Seret dan lepas file PDF Anda atau klik untuk memilih. Tidak perlu akun."
+    "title": "Cara Kerja",
+    "subtitle": "Pemrosesan PDF yang sederhana, cepat, dan aman langsung di browser Anda.",
+    "stepsTitle": "Tiga Langkah Sederhana",
+    "step1": {
+      "title": "Unggah PDF Anda",
+      "desc": "Seret dan lepas file PDF Anda atau klik untuk memilih. Tidak perlu akun."
+    },
+    "step2": {
+      "title": "Pilih Alat Anda",
+      "desc": "Pilih dari Gabungkan, Pisahkan, Kompres, Konversi, dan lainnya. Sesuaikan pengaturan sesuai kebutuhan."
+    },
+    "step3": {
+      "title": "Unduh Hasil",
+      "desc": "File Anda diproses secara instan. Unduh hasilnya dengan satu klik."
+    },
+    "whyTitle": "Mengapa Memilih Convertofy?",
+    "privacy": {
+      "title": "100% Privat",
+      "desc": "File tidak pernah meninggalkan perangkat Anda. Tanpa unggahan, tanpa server."
+    },
+    "speed": {
+      "title": "Sangat Cepat",
+      "desc": "Pemrosesan secepat perangkat keras Anda. Tanpa antrian."
+    },
+    "security": {
+      "title": "Aman",
+      "desc": "Pemrosesan terenkripsi dalam lingkungan terisolasi."
+    },
+    "ctaTitle": "Siap menguasai dokumen Anda?",
+    "ctaButton": "Mulai Sekarang – Gratis"
   },
-  "step2": {
-    "title": "Pilih Alat Anda",
-    "desc": "Pilih dari Gabungkan, Pisahkan, Kompres, Konversi, dan lainnya. Sesuaikan pengaturan sesuai kebutuhan."
+  "compress": {
+    "title": "Kompres PDF",
+    "description": "Kurangi ukuran file PDF sambil mempertahankan kualitas. Proses 100% di browser Anda.",
+    "dropzone": "Seret & lepas file PDF di sini",
+    "orClick": "atau klik untuk memilih",
+    "maxSize": "Ukuran file maksimal: 100MB",
+    "originalSize": "Ukuran asli",
+    "compressedSize": "Ukuran terkompres",
+    "compressionLevel": "Tingkat Kompresi",
+    "low": "Rendah",
+    "lowDesc": "Kompresi ringan, kualitas bagus",
+    "medium": "Sedang",
+    "mediumDesc": "Keseimbangan kualitas & ukuran",
+    "high": "Tinggi",
+    "highDesc": "Pengurangan ukuran maksimal",
+    "compress": "Kompres PDF",
+    "compressing": "Mengompres...",
+    "download": "Unduh PDF Terkompres",
+    "compressAnother": "Kompres Lagi",
+    "complete": "Kompresi selesai! PDF Anda siap diunduh.",
+    "saved": "terhemat",
+    "spaceSaved": "ruang",
+    "infoNote": "Kompresi menghapus metadata dan mengoptimalkan struktur PDF. Untuk gambar, kompresi tinggi dapat mempengaruhi kualitas.",
+    "errorInvalidFile": "Harap unggah file PDF yang valid.",
+    "errorNoFile": "Harap unggah file PDF terlebih dahulu.",
+    "errorGeneric": "Gagal mengompres PDF. Silakan coba lagi."
   },
-  "step3": {
-    "title": "Unduh Hasil",
-    "desc": "File Anda diproses secara instan. Unduh hasilnya dengan satu klik."
-  },
-  "whyTitle": "Mengapa Memilih Convertofy?",
-  "privacy": {
-    "title": "100% Privat",
-    "desc": "File tidak pernah meninggalkan perangkat Anda. Tanpa unggahan, tanpa server."
-  },
-  "speed": {
-    "title": "Sangat Cepat",
-    "desc": "Pemrosesan secepat perangkat keras Anda. Tanpa antrian."
-  },
-  "security": {
-    "title": "Aman",
-    "desc": "Pemrosesan terenkripsi dalam lingkungan terisolasi."
-  },
-  "ctaTitle": "Siap menguasai dokumen Anda?",
-  "ctaButton": "Mulai Sekarang – Gratis"
-},
-"compress": {
-  "title": "Kompres PDF",
-  "description": "Kurangi ukuran file PDF sambil mempertahankan kualitas. Proses 100% di browser Anda.",
-  "dropzone": "Seret & lepas file PDF di sini",
-  "orClick": "atau klik untuk memilih",
-  "maxSize": "Ukuran file maksimal: 100MB",
-  "originalSize": "Ukuran asli",
-  "compressedSize": "Ukuran terkompres",
-  "compressionLevel": "Tingkat Kompresi",
-  "low": "Rendah",
-  "lowDesc": "Kompresi ringan, kualitas bagus",
-  "medium": "Sedang",
-  "mediumDesc": "Keseimbangan kualitas & ukuran",
-  "high": "Tinggi",
-  "highDesc": "Pengurangan ukuran maksimal",
-  "compress": "Kompres PDF",
-  "compressing": "Mengompres...",
-  "download": "Unduh PDF Terkompres",
-  "compressAnother": "Kompres Lagi",
-  "complete": "Kompresi selesai! PDF Anda siap diunduh.",
-  "saved": "terhemat",
-  "spaceSaved": "ruang",
-  "infoNote": "Kompresi menghapus metadata dan mengoptimalkan struktur PDF. Untuk gambar, kompresi tinggi dapat mempengaruhi kualitas.",
-  "errorInvalidFile": "Harap unggah file PDF yang valid.",
-  "errorNoFile": "Harap unggah file PDF terlebih dahulu.",
-  "errorGeneric": "Gagal mengompres PDF. Silakan coba lagi."
-}
+  "pdfToWord": {
+    "title": "PDF ke Word",
+    "page": "Halaman",
+    "convertedBy": "Dikonversi oleh",
+    "description": "Konversi dokumen PDF ke file Word (.docx) yang dapat diedit. Semua pemrosesan dilakukan di browser Anda.",
+    "dropzone": "Seret & lepas file PDF di sini",
+    "orClick": "atau klik untuk memilih",
+    "maxSize": "Ukuran file maksimal: 100MB",
+    "includeImages": "Sertakan gambar (eksperimental)",
+    "infoNote": "Konversi ini mengekstrak teks dari PDF Anda. Tata letak kompleks mungkin tidak dipertahankan secara sempurna.",
+    "convert": "Konversi ke Word",
+    "converting": "Mengonversi...",
+    "download": "Unduh DOCX",
+    "convertAnother": "Konversi Lagi",
+    "complete": "Konversi selesai! Dokumen Word Anda siap diunduh.",
+    "errorInvalidFile": "Harap unggah file PDF yang valid.",
+    "errorNoFile": "Harap unggah file PDF terlebih dahulu.",
+    "errorGeneric": "Gagal mengonversi PDF. Silakan coba lagi."
+  }
 }

@@ -101,62 +101,81 @@
     "backToTools": "Back to Tools"
   },
   "howItWorks": {
-  "title": "How It Works",
-  "subtitle": "Simple, fast, and secure PDF processing right in your browser.",
-  "stepsTitle": "Three Simple Steps",
-  "step1": {
-    "title": "Upload Your PDF",
-    "desc": "Drag and drop your PDF files or click to browse. No account required."
+    "title": "How It Works",
+    "subtitle": "Simple, fast, and secure PDF processing right in your browser.",
+    "stepsTitle": "Three Simple Steps",
+    "step1": {
+      "title": "Upload Your PDF",
+      "desc": "Drag and drop your PDF files or click to browse. No account required."
+    },
+    "step2": {
+      "title": "Choose Your Tool",
+      "desc": "Select from Merge, Split, Compress, Convert, and more. Adjust settings as needed."
+    },
+    "step3": {
+      "title": "Download Result",
+      "desc": "Your file is processed instantly. Download the result with one click."
+    },
+    "whyTitle": "Why Choose Convertofy?",
+    "privacy": {
+      "title": "100% Private",
+      "desc": "Files never leave your device. No uploads, no servers."
+    },
+    "speed": {
+      "title": "Lightning Fast",
+      "desc": "Process at the speed of your hardware. No waiting in queues."
+    },
+    "security": {
+      "title": "Secure",
+      "desc": "Encrypted processing in a sandboxed environment."
+    },
+    "ctaTitle": "Ready to master your documents?",
+    "ctaButton": "Start Now – It's Free"
   },
-  "step2": {
-    "title": "Choose Your Tool",
-    "desc": "Select from Merge, Split, Compress, Convert, and more. Adjust settings as needed."
+  "compress": {
+    "title": "Compress PDF",
+    "description": "Reduce PDF file size while maintaining quality. Process runs 100% in your browser.",
+    "dropzone": "Drag & drop a PDF file here",
+    "orClick": "or click to browse",
+    "maxSize": "Maximum file size: 100MB",
+    "originalSize": "Original size",
+    "compressedSize": "Compressed size",
+    "compressionLevel": "Compression Level",
+    "low": "Low",
+    "lowDesc": "Light compression, good quality",
+    "medium": "Medium",
+    "mediumDesc": "Balanced quality & size",
+    "high": "High",
+    "highDesc": "Maximum size reduction",
+    "compress": "Compress PDF",
+    "compressing": "Compressing...",
+    "download": "Download Compressed PDF",
+    "compressAnother": "Compress Another",
+    "complete": "Compression complete! Your PDF is ready to download.",
+    "saved": "saved",
+    "spaceSaved": "space saved",
+    "infoNote": "Compression removes metadata and optimizes PDF structure. For images, higher compression may affect quality.",
+    "errorInvalidFile": "Please upload a valid PDF file.",
+    "errorNoFile": "Please upload a PDF file first.",
+    "errorGeneric": "Failed to compress PDF. Please try again."
   },
-  "step3": {
-    "title": "Download Result",
-    "desc": "Your file is processed instantly. Download the result with one click."
-  },
-  "whyTitle": "Why Choose Convertofy?",
-  "privacy": {
-    "title": "100% Private",
-    "desc": "Files never leave your device. No uploads, no servers."
-  },
-  "speed": {
-    "title": "Lightning Fast",
-    "desc": "Process at the speed of your hardware. No waiting in queues."
-  },
-  "security": {
-    "title": "Secure",
-    "desc": "Encrypted processing in a sandboxed environment."
-  },
-  "ctaTitle": "Ready to master your documents?",
-  "ctaButton": "Start Now – It's Free"
-},
-"compress": {
-  "title": "Compress PDF",
-  "description": "Reduce PDF file size while maintaining quality. Process runs 100% in your browser.",
-  "dropzone": "Drag & drop a PDF file here",
-  "orClick": "or click to browse",
-  "maxSize": "Maximum file size: 100MB",
-  "originalSize": "Original size",
-  "compressedSize": "Compressed size",
-  "compressionLevel": "Compression Level",
-  "low": "Low",
-  "lowDesc": "Light compression, good quality",
-  "medium": "Medium",
-  "mediumDesc": "Balanced quality & size",
-  "high": "High",
-  "highDesc": "Maximum size reduction",
-  "compress": "Compress PDF",
-  "compressing": "Compressing...",
-  "download": "Download Compressed PDF",
-  "compressAnother": "Compress Another",
-  "complete": "Compression complete! Your PDF is ready to download.",
-  "saved": "saved",
-  "spaceSaved": "space saved",
-  "infoNote": "Compression removes metadata and optimizes PDF structure. For images, higher compression may affect quality.",
-  "errorInvalidFile": "Please upload a valid PDF file.",
-  "errorNoFile": "Please upload a PDF file first.",
-  "errorGeneric": "Failed to compress PDF. Please try again."
-}
+  "pdfToWord": {
+    "page": "Page",
+    "convertedBy": "Converted by",
+    "title": "PDF to Word",
+    "description": "Convert PDF documents to editable Word (.docx) files. All processing happens in your browser.",
+    "dropzone": "Drag & drop a PDF file here",
+    "orClick": "or click to browse",
+    "maxSize": "Maximum file size: 100MB",
+    "includeImages": "Include images (experimental)",
+    "infoNote": "This conversion extracts text from your PDF. Complex layouts may not be preserved perfectly.",
+    "convert": "Convert to Word",
+    "converting": "Converting...",
+    "download": "Download DOCX",
+    "convertAnother": "Convert Another",
+    "complete": "Conversion complete! Your Word document is ready to download.",
+    "errorInvalidFile": "Please upload a valid PDF file.",
+    "errorNoFile": "Please upload a PDF file first.",
+    "errorGeneric": "Failed to convert PDF. Please try again."
+  }
 }

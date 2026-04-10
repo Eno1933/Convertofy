@@ -4,6 +4,7 @@ import MergePage from './pages/MergePage';
 import SplitPage from './pages/SplitPage';
 import CompressPage from './pages/CompressPage';
 import HowItWorks from './pages/HowItWorks';
+import PdfToWordPage from './pages/PdfToWordPage';
 
 export default function App() {
   return (
@@ -13,6 +14,7 @@ export default function App() {
       <Route path="/split" element={<SplitPage />} />
       <Route path="/compress" element={<CompressPage />} />
       <Route path="/how-it-works" element={<HowItWorks />} />
+      <Route path="/pdf-to-word" element={<PdfToWordPage />} />
     </Routes>
   );
 }
