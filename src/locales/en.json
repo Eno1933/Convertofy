@@ -177,5 +177,21 @@
     "errorInvalidFile": "Please upload a valid PDF file.",
     "errorNoFile": "Please upload a PDF file first.",
     "errorGeneric": "Failed to convert PDF. Please try again."
+  },
+  "wordToPdf": {
+    "title": "Word to PDF",
+    "description": "Convert Microsoft Word (.docx) documents to PDF format. All processing happens in your browser.",
+    "dropzone": "Drag & drop a Word (.docx) file here",
+    "orClick": "or click to browse",
+    "maxSize": "Maximum file size: 100MB",
+    "infoNote": "This conversion extracts text from your document. Complex layouts may not be preserved perfectly.",
+    "convert": "Convert to PDF",
+    "converting": "Converting...",
+    "download": "Download PDF",
+    "convertAnother": "Convert Another",
+    "complete": "Conversion complete! Your PDF is ready to download.",
+    "errorInvalidFile": "Please upload a valid .docx Word file.",
+    "errorNoFile": "Please upload a Word file first.",
+    "errorGeneric": "Failed to convert Word to PDF. Please try again."
   }
 }

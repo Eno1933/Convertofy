@@ -177,5 +177,21 @@
     "errorInvalidFile": "Harap unggah file PDF yang valid.",
     "errorNoFile": "Harap unggah file PDF terlebih dahulu.",
     "errorGeneric": "Gagal mengonversi PDF. Silakan coba lagi."
+  },
+  "wordToPdf": {
+    "title": "Word ke PDF",
+    "description": "Konversi dokumen Microsoft Word (.docx) ke format PDF. Semua pemrosesan terjadi di browser Anda.",
+    "dropzone": "Seret & lepas file Word (.docx) di sini",
+    "orClick": "atau klik untuk memilih",
+    "maxSize": "Ukuran file maksimal: 100MB",
+    "infoNote": "Konversi ini mengekstrak teks dari dokumen Anda. Tata letak kompleks mungkin tidak dipertahankan dengan sempurna.",
+    "convert": "Konversi ke PDF",
+    "converting": "Mengonversi...",
+    "download": "Unduh PDF",
+    "convertAnother": "Konversi Lagi",
+    "complete": "Konversi selesai! PDF Anda siap diunduh.",
+    "errorInvalidFile": "Harap unggah file Word .docx yang valid.",
+    "errorNoFile": "Harap unggah file Word terlebih dahulu.",
+    "errorGeneric": "Gagal mengonversi Word ke PDF. Silakan coba lagi."
   }
 }

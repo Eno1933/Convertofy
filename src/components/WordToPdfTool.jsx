@@ -20,31 +20,10 @@ const Button = ({ children, variant = "primary", className = "", onClick, disabl
   );
 };
 
-// ─── CloudConvert helpers ──────────────────────────────────────────────────────
-
 const CLOUDCONVERT_BASE = 'https://api.cloudconvert.com/v2';
 
-/**
- * Jalankan satu job konversi.
- * engine: undefined = PDFTron (default CloudConvert, paling akurat)
- *         'libreoffice' = fallback dengan OCR untuk PDF scan
- */
-async function tryConvert(apiKey, file, engine, useOcr) {
-  const convertTask = {
-    operation: 'convert',
-    input: 'import-file',
-    input_format: 'pdf',
-    output_format: 'docx',
-  };
-
-  if (engine) convertTask.engine = engine;
-
-  if (useOcr) {
-    convertTask.ocr = true;
-    convertTask.ocr_language = 'ind+eng';
-  }
-
-  // 1. Buat job
+async function convertWithCloudConvert(apiKey, file, onProgress) {
+  onProgress(10);
   const jobRes = await fetch(`${CLOUDCONVERT_BASE}/jobs`, {
     method: 'POST',
     headers: {
@@ -54,7 +33,13 @@ async function tryConvert(apiKey, file, engine, useOcr) {
     body: JSON.stringify({
       tasks: {
         'import-file': { operation: 'import/upload' },
-        'convert-file': convertTask,
+        'convert-file': {
+          operation: 'convert',
+          input: 'import-file',
+          input_format: 'docx',
+          output_format: 'pdf',
+          engine: 'libreoffice',
+        },
         'export-file': {
           operation: 'export/url',
           input: 'convert-file',
@@ -74,7 +59,7 @@ async function tryConvert(apiKey, file, engine, useOcr) {
   const uploadTask = jobData.data.tasks.find(t => t.name === 'import-file');
   const { url: uploadUrl, parameters: uploadParams } = uploadTask.result.form;
 
-  // 2. Upload file
+  onProgress(30);
   const formData = new FormData();
   Object.entries(uploadParams).forEach(([k, v]) => formData.append(k, v));
   formData.append('file', file);
@@ -82,12 +67,14 @@ async function tryConvert(apiKey, file, engine, useOcr) {
   const uploadRes = await fetch(uploadUrl, { method: 'POST', body: formData });
   if (!uploadRes.ok) throw new Error(`Upload gagal: ${uploadRes.status}`);
 
-  // 3. Poll hasil
-  const deadline = Date.now() + 120_000;
-  let resultUrl = null;
+  onProgress(50);
+  const MAX_WAIT_MS = 120_000;
+  const POLL_INTERVAL_MS = 2_000;
+  const deadline = Date.now() + MAX_WAIT_MS;
 
+  let resultUrl = null;
   while (Date.now() < deadline) {
-    await new Promise(r => setTimeout(r, 2_000));
+    await new Promise(r => setTimeout(r, POLL_INTERVAL_MS));
 
     const pollRes = await fetch(`${CLOUDCONVERT_BASE}/jobs/${jobId}`, {
       headers: { Authorization: `Bearer ${apiKey}` },
@@ -102,6 +89,7 @@ async function tryConvert(apiKey, file, engine, useOcr) {
     }
 
     if (job.status === 'finished') {
+      onProgress(80);
       const exportTask = job.tasks.find(t => t.name === 'export-file');
       resultUrl = exportTask?.result?.files?.[0]?.url;
       break;
@@ -110,65 +98,32 @@ async function tryConvert(apiKey, file, engine, useOcr) {
 
   if (!resultUrl) throw new Error('Timeout: konversi terlalu lama');
 
-  // 4. Download DOCX
-  const docxRes = await fetch(resultUrl);
-  if (!docxRes.ok) throw new Error('Gagal mengunduh hasil DOCX');
-  return await docxRes.blob();
+  onProgress(90);
+  const pdfRes = await fetch(resultUrl);
+  if (!pdfRes.ok) throw new Error('Gagal mengunduh hasil PDF');
+  const blob = await pdfRes.blob();
+
+  onProgress(100);
+  return blob;
 }
 
-/**
- * Strategi konversi bertingkat:
- *
- * Tahap 1 → PDFTron (default) : terbaik untuk PDF digital — sama akuratnya
- *                                dengan Adobe Acrobat & Foxit
- * Tahap 2 → LibreOffice + OCR : fallback untuk PDF scan / gambar
- */
-async function convertWithCloudConvert(apiKey, file, onProgress) {
-  const strategies = [
-    { engine: undefined,       ocr: false, label: 'PDFTron'           },
-    { engine: 'libreoffice',   ocr: true,  label: 'LibreOffice + OCR' },
-  ];
-
-  onProgress(10);
-  let lastError = null;
-
-  for (let i = 0; i < strategies.length; i++) {
-    const { engine, ocr, label } = strategies[i];
-    try {
-      onProgress(15 + i * 40); // 15% → 55%
-      const blob = await tryConvert(apiKey, file, engine, ocr);
-      onProgress(95);
-      return { blob, label };
-    } catch (err) {
-      console.warn(`[pdf2word] Strategy "${label}" failed:`, err.message);
-      lastError = err;
-    }
-  }
-
-  throw lastError ?? new Error('Semua metode konversi gagal');
-}
-
-// ─── Component ────────────────────────────────────────────────────────────────
-
-const PdfToWordTool = ({ onBack }) => {
+const WordToPdfTool = ({ onBack }) => {
   const { t } = useLanguage();
   const apiKey = import.meta.env.VITE_CLOUDCONVERT_API_KEY;
 
   const [file, setFile] = useState(null);
   const [processing, setProcessing] = useState(false);
   const [progress, setProgress] = useState(0);
-  const [progressLabel, setProgressLabel] = useState('');
   const [resultUrl, setResultUrl] = useState(null);
   const [resultFileName, setResultFileName] = useState('');
-  const [usedEngine, setUsedEngine] = useState('');
   const [error, setError] = useState(null);
 
   const onDrop = useCallback((acceptedFiles) => {
     setError(null);
     setResultUrl(null);
     const selected = acceptedFiles[0];
-    if (!selected || selected.type !== 'application/pdf') {
-      setError(t('pdfToWord.errorInvalidFile'));
+    if (!selected || !selected.name.toLowerCase().endsWith('.docx')) {
+      setError(t('wordToPdf.errorInvalidFile'));
       return;
     }
     setFile({ name: selected.name, size: selected.size, raw: selected });
@@ -176,7 +131,7 @@ const PdfToWordTool = ({ onBack }) => {
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
-    accept: { 'application/pdf': ['.pdf'] },
+    accept: { 'application/vnd.openxmlformats-officedocument.wordprocessingml.document': ['.docx'] },
     multiple: false,
   });
 
@@ -188,45 +143,30 @@ const PdfToWordTool = ({ onBack }) => {
 
   const handleConvert = async () => {
     if (!file) {
-      setError(t('pdfToWord.errorNoFile'));
+      setError(t('wordToPdf.errorNoFile'));
       return;
     }
 
     setProcessing(true);
     setProgress(0);
-    setProgressLabel('Mempersiapkan konversi…');
     setError(null);
-    setUsedEngine('');
     if (resultUrl) URL.revokeObjectURL(resultUrl);
     setResultUrl(null);
 
     try {
-      const { blob, label } = await convertWithCloudConvert(
-        apiKey,
-        file.raw,
-        (p) => {
-          setProgress(p);
-          if (p < 15)  setProgressLabel('Mempersiapkan…');
-          else if (p < 55) setProgressLabel('Mengkonversi dengan PDFTron…');
-          else if (p < 95) setProgressLabel('Fallback: LibreOffice + OCR…');
-          else             setProgressLabel('Mengunduh hasil…');
-        },
-      );
-
+      const blob = await convertWithCloudConvert(apiKey, file.raw, (p) => setProgress(p));
       const url = URL.createObjectURL(blob);
       setResultUrl(url);
-      setResultFileName(file.name.replace(/\.pdf$/i, '.docx'));
-      setUsedEngine(label);
-      setProgress(100);
+      setResultFileName(file.name.replace(/\.docx$/i, '.pdf'));
     } catch (err) {
       console.error(err);
-      setError(err.message || t('pdfToWord.errorGeneric'));
+      setError(err.message || t('wordToPdf.errorGeneric'));
     } finally {
       setProcessing(false);
     }
   };
 
-  const downloadDocx = () => {
+  const downloadPdf = () => {
     if (!resultUrl) return;
     const a = document.createElement('a');
     a.href = resultUrl;
@@ -239,10 +179,8 @@ const PdfToWordTool = ({ onBack }) => {
     setFile(null);
     setResultUrl(null);
     setResultFileName('');
-    setUsedEngine('');
     setError(null);
     setProgress(0);
-    setProgressLabel('');
   };
 
   const formatBytes = (bytes) => {
@@ -267,9 +205,9 @@ const PdfToWordTool = ({ onBack }) => {
         <div className="bg-surface-lowest rounded-2xl shadow-ambient overflow-hidden">
           <div className="p-8 border-b border-outline-variant/20">
             <h1 className="font-display text-3xl md:text-4xl font-bold text-on-surface">
-              {t('pdfToWord.title')}
+              {t('wordToPdf.title')}
             </h1>
-            <p className="text-on-surface-variant mt-2">{t('pdfToWord.description')}</p>
+            <p className="text-on-surface-variant mt-2">{t('wordToPdf.description')}</p>
           </div>
 
           <div className="p-8 space-y-6">
@@ -284,9 +222,9 @@ const PdfToWordTool = ({ onBack }) => {
               >
                 <input {...getInputProps()} />
                 <Upload className="mx-auto text-on-surface-variant mb-4" size={40} strokeWidth={1.5} />
-                <p className="text-on-surface font-medium">{t('pdfToWord.dropzone')}</p>
-                <p className="text-on-surface-variant text-sm mt-1">{t('pdfToWord.orClick')}</p>
-                <p className="text-xs text-on-surface-variant/70 mt-4">{t('pdfToWord.maxSize')}</p>
+                <p className="text-on-surface font-medium">{t('wordToPdf.dropzone')}</p>
+                <p className="text-on-surface-variant text-sm mt-1">{t('wordToPdf.orClick')}</p>
+                <p className="text-xs text-on-surface-variant/70 mt-4">{t('wordToPdf.maxSize')}</p>
               </div>
             ) : (
               <div className="space-y-4">
@@ -307,8 +245,6 @@ const PdfToWordTool = ({ onBack }) => {
                   </button>
                 </div>
 
-
-
                 {/* Error */}
                 {error && (
                   <div className="p-4 bg-red-500/10 border border-red-500/30 rounded-lg flex items-center gap-3 text-red-600 dark:text-red-400">
@@ -320,7 +256,7 @@ const PdfToWordTool = ({ onBack }) => {
                 {/* Convert button */}
                 {!processing && !resultUrl && (
                   <Button variant="primary" onClick={handleConvert} className="w-full sm:w-auto">
-                    {t('pdfToWord.convert')}
+                    {t('wordToPdf.convert')}
                   </Button>
                 )}
 
@@ -328,7 +264,13 @@ const PdfToWordTool = ({ onBack }) => {
                 {processing && (
                   <div className="space-y-3">
                     <div className="flex justify-between text-sm text-on-surface-variant">
-                      <span>{progressLabel}</span>
+                      <span>
+                        {progress < 30
+                          ? 'Mengirim file…'
+                          : progress < 80
+                          ? 'Mengkonversi…'
+                          : 'Mengunduh hasil…'}
+                      </span>
                       <span>{Math.round(progress)}%</span>
                     </div>
                     <div className="h-2 bg-surface-high rounded-full overflow-hidden">
@@ -345,14 +287,14 @@ const PdfToWordTool = ({ onBack }) => {
                   <div className="space-y-4">
                     <div className="p-3 bg-secondary/10 rounded-lg flex items-center gap-2 text-secondary">
                       <CheckCircle size={18} />
-                      <span className="text-sm font-medium">{t('pdfToWord.complete')}</span>
+                      <span className="text-sm font-medium">{t('wordToPdf.complete')}</span>
                     </div>
                     <div className="flex flex-col sm:flex-row gap-3">
-                      <Button variant="primary" onClick={downloadDocx}>
-                        <Download size={18} /> {t('pdfToWord.download')}
+                      <Button variant="primary" onClick={downloadPdf}>
+                        <Download size={18} /> {t('wordToPdf.download')}
                       </Button>
                       <Button variant="secondary" onClick={reset}>
-                        {t('pdfToWord.convertAnother')}
+                        {t('wordToPdf.convertAnother')}
                       </Button>
                     </div>
                   </div>
@@ -366,4 +308,4 @@ const PdfToWordTool = ({ onBack }) => {
   );
 };
 
-export default PdfToWordTool;
+export default WordToPdfTool;

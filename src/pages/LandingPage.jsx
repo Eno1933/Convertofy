@@ -491,6 +491,8 @@ export default function LandingPage({ onNavigate }) {
       onNavigate("/compress");
     } else if (toolId === "pdf-to-word") {
       onNavigate("/pdf-to-word");
+    } else if (toolId === "word-to-pdf") {
+      onNavigate("/word-to-pdf");
     } else {
       setSelectedTool(toolName);
       setModalOpen(true);
